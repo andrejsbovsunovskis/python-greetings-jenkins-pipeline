@@ -36,13 +36,13 @@ def deployToEnv(String envName, String port) {
             ./venv/bin/python -m pip install -r requirements.txt
 
             echo "Stopping existing PM2 process for ${envName} if it exists..."
-            pm2 delete greetings-app-${envName} || true
+            /opt/homebrew/bin/pm2 delete greetings-app-${envName} || true
 
             echo "Starting application for ${envName} on port ${port}..."
-            pm2 start app.py --name greetings-app-${envName} --interpreter ./venv/bin/python -- --port ${port}
+            /opt/homebrew/bin/pm2 start app.py --name greetings-app-${envName} --interpreter ./venv/bin/python -- --port ${port}
 
             echo "Saving PM2 process list..."
-            pm2 save
+            /opt/homebrew/bin/pm2 save
         """
     }
 }

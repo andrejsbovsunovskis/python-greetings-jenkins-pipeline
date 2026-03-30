@@ -66,3 +66,81 @@ def testOnEnv(String envName) {
         """
     }
 }
+
+pipeline {
+    agent any
+
+    stages {
+        stage('install-pip-deps') {
+            steps {
+                script {
+                    installPipDeps()
+                }
+            }
+        }
+
+        stage('deploy-to-dev') {
+            steps {
+                script {
+                    deployToEnv('dev', '7001')
+                }
+            }
+        }
+
+        stage('tests-on-dev') {
+            steps {
+                script {
+                    testOnEnv('dev')
+                }
+            }
+        }
+
+        stage('deploy-to-stg') {
+            steps {
+                script {
+                    deployToEnv('stg', '7002')
+                }
+            }
+        }
+
+        stage('tests-on-stg') {
+            steps {
+                script {
+                    testOnEnv('stg')
+                }
+            }
+        }
+
+        stage('deploy-to-preprod') {
+            steps {
+                script {
+                    deployToEnv('preprod', '7003')
+                }
+            }
+        }
+
+        stage('tests-on-preprod') {
+            steps {
+                script {
+                    testOnEnv('preprod')
+                }
+            }
+        }
+
+        stage('deploy-to-prod') {
+            steps {
+                script {
+                    deployToEnv('prod', '7004')
+                }
+            }
+        }
+
+        stage('tests-on-prod') {
+            steps {
+                script {
+                    testOnEnv('prod')
+                }
+            }
+        }
+    }
+}

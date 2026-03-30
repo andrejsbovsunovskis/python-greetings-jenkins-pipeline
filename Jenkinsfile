@@ -6,6 +6,8 @@ def installPipDeps() {
         git branch: 'main', url: 'https://github.com/mtararujs/python-greetings'
 
         sh '''
+            export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
             echo "Listing files in python-greetings repository..."
             ls -la
 
@@ -26,6 +28,8 @@ def deployToEnv(String envName, String port) {
         git branch: 'main', url: 'https://github.com/mtararujs/python-greetings'
 
         sh """
+            export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:\$PATH"
+
             echo "Listing files in python-greetings repository for ${envName}..."
             ls -la
 
@@ -36,13 +40,13 @@ def deployToEnv(String envName, String port) {
             ./venv/bin/python -m pip install -r requirements.txt
 
             echo "Stopping existing PM2 process for ${envName} if it exists..."
-            /opt/homebrew/bin/pm2 delete greetings-app-${envName} || true
+            pm2 delete greetings-app-${envName} || true
 
             echo "Starting application for ${envName} on port ${port}..."
-            /opt/homebrew/bin/pm2 start app.py --name greetings-app-${envName} --interpreter ./venv/bin/python -- --port ${port}
+            pm2 start app.py --name greetings-app-${envName} --interpreter ./venv/bin/python -- --port ${port}
 
             echo "Saving PM2 process list..."
-            /opt/homebrew/bin/pm2 save
+            pm2 save
         """
     }
 }
@@ -55,8 +59,16 @@ def testOnEnv(String envName) {
         git branch: 'main', url: 'https://github.com/mtararujs/course-js-api-framework'
 
         sh """
+            export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:\$PATH"
+
             echo "Listing files in course-js-api-framework repository for ${envName}..."
             ls -la
+
+            echo "Node version:"
+            node --version
+
+            echo "NPM version:"
+            npm --version
 
             echo "Installing npm dependencies for ${envName} tests..."
             npm install
